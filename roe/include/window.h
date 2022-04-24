@@ -10,6 +10,7 @@
 #include <QPixmap>
 #include <QCloseEvent>
 
+
 class Window : public QMainWindow {
     Q_OBJECT
 
@@ -18,9 +19,9 @@ public:
     ~Window();
     void readSettings();
     void closeEvent(QCloseEvent *event);
+    void createActions();
 public:
     QVBoxLayout *layout;
-    QVBoxLayout *ctlayout;
     QWidget *centralwidget;
 
 };

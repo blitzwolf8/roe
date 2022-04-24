@@ -24,6 +24,8 @@ set(PROJECT_SOURCES
     include/window.h
     )
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g -O3")
+
 add_library(roeden ${PROJECT_SOURCES})
 
 target_include_directories(roeden SYSTEM INTERFACE
