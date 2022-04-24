@@ -4,10 +4,6 @@ project(roe VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-#set(CMAKE_AUTOUIC ON)
-#set(CMAKE_AUTOMOC ON)
-#set(CMAKE_AUTORCC ON)
-
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -24,7 +20,14 @@ set(PROJECT_SOURCES
     include/window.h
     )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g -O3")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=undefined -g -O3")
+endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+
+
+if(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=thread")
+endif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
 
 add_library(roeden ${PROJECT_SOURCES})
 
