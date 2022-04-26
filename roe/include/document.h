@@ -10,7 +10,7 @@ class Document : public QObject {
     Q_OBJECT
 public:
     explicit Document(QObject *parent = nullptr);
-
+    QTextDocument *document() const;
 private:
     QTextDocument *_document;
 
