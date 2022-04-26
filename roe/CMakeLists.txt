@@ -18,6 +18,10 @@ include_directories(${ROE_INCLUDE_DIR})
 set(PROJECT_SOURCES
     src/window.cc
     include/window.h
+    src/document.cc
+    include/document.h
+    include/editor.h
+    src/editor.cc
     )
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
