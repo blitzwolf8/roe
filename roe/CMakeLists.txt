@@ -22,6 +22,8 @@ set(PROJECT_SOURCES
     include/document.h
     include/editor.h
     src/editor.cc
+    include/tabwidget.h
+    src/tabwidget.cc
     )
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
