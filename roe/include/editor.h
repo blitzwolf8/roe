@@ -21,7 +21,7 @@ public:
     void Save();
     void SaveAs();
     QPlainTextEdit* editor() const;
-    QString docuemntName();
+    QString documentName();
     void closeEvent(QCloseEvent *event);
 
 private:
