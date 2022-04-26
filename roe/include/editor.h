@@ -6,6 +6,7 @@
 #include <QCloseEvent>
 #include <QVBoxLayout>
 #include <QPlainTextEdit>
+#include <QFile>
 
 enum class OpenMode { NEW, EXISTING };
 
@@ -29,6 +30,7 @@ private:
     QPlainTextEdit *textEdit;
     QString fileName;
     Document *doc;
+    QFile *file;
 };
 
 
