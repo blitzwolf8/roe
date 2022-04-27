@@ -13,13 +13,16 @@ TabWidget::TabWidget(QWidget *parent)
 }
 
 void TabWidget::newDocument() {
-    auto idx = addTab(new Editor(OpenMode::NEW, this), "Untitled");
+    auto editor = new Editor(OpenMode::NEW, this);
+    auto idx = addTab(editor, "Untitled");
     setCurrentIndex(idx);
+    qDebug() << "Create new tab.";
 }
 
 void TabWidget::openDocument() {
     auto idx = addTab(new Editor(OpenMode::EXISTING, this), "");
     setCurrentIndex(idx);
+    qDebug() << "Open tab.";
 }
 
 void TabWidget::savedDocument(quint16 index) {
