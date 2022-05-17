@@ -53,3 +53,7 @@ compile_commands.json
 
 *_qmlcache.qrc
 
+# VsCode cmake generated files
+build
+.vscode
+

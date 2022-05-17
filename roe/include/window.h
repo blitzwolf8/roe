@@ -16,7 +16,6 @@ class Window : public QMainWindow {
 
 public:
     Window(QWidget *parent = nullptr);
-    ~Window();
     void readSettings();
     void closeEvent(QCloseEvent *event);
     void createActions();

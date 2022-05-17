@@ -72,5 +72,4 @@ void Window::createActions() {
 
 }
 
-Window::~Window() {}
 
