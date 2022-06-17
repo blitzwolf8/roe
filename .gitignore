@@ -56,4 +56,5 @@ compile_commands.json
 # VsCode cmake generated files
 build
 .vscode
+temp
 
