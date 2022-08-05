@@ -1,78 +1,77 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.14)
 
-project(roe VERSION 0.1 LANGUAGES CXX)
+if(CMAKE_VERSION VERSION_LESS 3.0)
+  project(roe CXX C)
+  set(PROJECT_VERSION ${ROE_VERSION})
+else()
+  cmake_policy(SET CMP0048 NEW)
+  project(roe VERSION ${ROE_VERSION} LANGUAGES CXX C )
+endif()
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+find_package(Qt6 6.2 COMPONENTS Core Widgets REQUIRED)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O3")
 
+set(ROE_INCLUDE_DIRS 
+    "${roe_SOURCE_DIR}/include"
+)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+include_directories(ROE_INLCUDE_DIRS)
 
-set(ROE_INCLUDE_DIR "${roe_SOURCE_DIR}/include")
-
-include_directories(${ROE_INCLUDE_DIR})
+set(ROE_SOURCE_DIR "${roe_SOURCE_DIR}/src")
 
 set(PROJECT_SOURCES
-    src/window.cc
-    include/window.h
-    src/document.cc
-    include/document.h
-    include/editor.h
-    src/editor.cc
-    include/tabwidget.h
-    src/tabwidget.cc
-    )
+        ${ROE_SOURCE_DIR}/main.cc
+        ${ROE_SOURCE_DIR}/editor.cc
+        ${ROE_SOURCE_DIR}/document.cc
+        ${ROE_SOURCE_DIR}/tabwidget.cc
+        ${ROE_SOURCE_DIR}/window.cc  
+        
+        
+        ${roe_SOURCE_DIR}/include/document.h
+        ${roe_SOURCE_DIR}/include/editor.h
+        ${roe_SOURCE_DIR}/include/tabwidget.h
+        ${roe_SOURCE_DIR}/include/window.h   
+)
+
+
+qt_add_executable(roe
+    MANUAL_FINALIZATION
+    ${PROJECT_SOURCES}
+)
+
+target_include_directories(roe PUBLIC ${ROE_INCLUDE_DIRS})
+target_link_directories(roe PUBLIC ${ROE_INCLUDE_DIRS})
+
+target_compile_definitions(roe
+  PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Asan")  
+  target_compile_options(roe PRIVATE -fsanitize=address)
+  target_link_options(roe PRIVATE -fsanitize=address)
+endif(CMAKE_BUILD_TYPE STREQUAL "Asan")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=undefined -g -O3")
+  target_compile_options(roe PRIVATE -g -O3)
+  target_link_options(roe PRIVATE -g -O3)
 endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 
-if(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=thread")
-endif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+if(CMAKE_BUILD_TYPE STREQUAL "Tsan")
+  target_compile_options(roe PRIVATE -fsanitize=thread)
+  target_link_options(roe PRIVATE -fsanitize=thread)
+endif(CMAKE_BUILD_TYPE STREQUAL "Tsan")
 
-add_library(roeden ${PROJECT_SOURCES})
-
-target_include_directories(roeden SYSTEM INTERFACE
-    "$<BUILD_INTERFACE:${ROE_INCLUDE_DIR}>")
-target_link_libraries(roeden PUBLIC Qt${QT_VERSION_MAJOR}::Widgets)
-
-
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    add_executable(roe
-        src/main.cc
-        )
-    target_link_libraries(roe PUBLIC roeden)
-    # Define target properties for Android with Qt 6 as:
-    #    set_property(TARGET roe APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-    #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-    # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-else()
-    if(ANDROID)
-        add_library(roe SHARED
-            ${PROJECT_SOURCES}
-            )
-        # Define properties for Android with Qt 5 after find_package() calls as:
-        #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(roe
-            ${PROJECT_SOURCES}
-            )
-    endif()
-endif()
-
-target_link_libraries(roe PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(roe
+  PRIVATE Qt6::Core Qt6::Widgets)
 
 set_target_properties(roe PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
+    MACOSX_BUNDLE_GUI_IDENTIFIER roe.xio.org
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    )
+)
 
 if(QT_VERSION_MAJOR EQUAL 6)
+    #qt_import_qml_plugins(roe)
     qt_finalize_executable(roe)
 endif()
