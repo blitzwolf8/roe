@@ -1,27 +1,33 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#include "editor.h"
 
+#include <QAction>
+#include <QCloseEvent>
+#include <QIcon>
 #include <QMainWindow>
+#include <QPixmap>
+#include <QSettings>
 #include <QVBoxLayout>
 #include <QWidget>
-#include <QAction>
-#include <QIcon>
-#include <QSettings>
-#include <QPixmap>
-#include <QCloseEvent>
-
 
 class Window : public QMainWindow {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    Window(QWidget *parent = nullptr);
-    void readSettings();
-    void closeEvent(QCloseEvent *event);
-    void createActions();
-public:
-    QVBoxLayout *layout;
-    QWidget *centralwidget;
+  explicit Window(QWidget *parent = nullptr);
+  ~Window();
 
+  void readSettings();
+  void closeEvent(QCloseEvent *event);
+  void createActions();
+  void about();
+  void feedback();
+  void help();
+
+public slots:
+  void setTitle(const QString&);
+
+private:
+  QMenuBar *menubar;
+  QWidget *centralwidget;
+  PlainTextEditor *editor;
 };
-#endif // WINDOW_H

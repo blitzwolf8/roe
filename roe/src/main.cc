@@ -5,11 +5,11 @@
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setApplicationVersion("1.0");
-    QCoreApplication::setOrganizationDomain("org.roe.xio");
+    QCoreApplication::setApplicationVersion("1.0.0");
+    QCoreApplication::setOrganizationDomain("org.xio.roe");
     QCoreApplication::setOrganizationName("XIO");
-    QCoreApplication::setApplicationName("Roe");
-
+    QCoreApplication::setApplicationName("roe");
+    
     QApplication a(argc, argv);
     Window w;
     w.show();

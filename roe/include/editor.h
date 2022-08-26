@@ -2,36 +2,32 @@
 #define EDITOR_H
 
 #include "document.h"
+
 #include <QWidget>
-#include <QCloseEvent>
-#include <QVBoxLayout>
-#include <QPlainTextEdit>
-#include <QFile>
 
-enum class OpenMode { NEW, EXISTING };
+class PlainTextEditor : public QWidget {
+  Q_OBJECT
 
-
-class Editor : public QWidget {
-    Q_OBJECT
 public:
-    explicit Editor(OpenMode _mode, QWidget *parent = nullptr);
-    void New();
-    void Open();
-    void Close();
-    void Save();
-    void SaveAs();
-    QPlainTextEdit* editor() const;
-    QString documentName();
-    void closeEvent(QCloseEvent *event);
+  explicit PlainTextEditor(QWidget *parent = nullptr);
+  ~PlainTextEditor();
+
+  void New ();
+  void open();
+  void save();
+  void close();
+  void undo();
+  void redo();
+  void cut();
+  void copy();
+  void replace();
+  void zoomIn();
+  void zoomOut();
+  void setWrapMode();
+  void setFont();
 
 private:
-    OpenMode mode;
-    QVBoxLayout *layout;
-    QPlainTextEdit *textEdit;
-    QString fileName;
-    Document *doc;
-    QFile *file;
+  PlainTextDocument *m_document;
 };
 
-
-#endif // EDITOR_H
+#endif
