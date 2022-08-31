@@ -16,10 +16,8 @@ public:
 
 public:
   Q_INVOKABLE virtual void write() = 0;
-  Q_INVOKABLE virtual void read() = 0;
   Q_INVOKABLE virtual void save() = 0;
   Q_INVOKABLE virtual void saveAs() = 0;
-  Q_INVOKABLE virtual void open() = 0;
   Q_INVOKABLE virtual void close() = 0;
   Q_INVOKABLE virtual QString fileName() const = 0;
 

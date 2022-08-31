@@ -30,10 +30,6 @@ void PlainTextDocument::open(const QString &file) {
   }
 }
 
-void PlainTextDocument::open() {}
-
-void PlainTextDocument::read() {}
-
 void PlainTextDocument::save() {}
 
 void PlainTextDocument::saveAs() {}

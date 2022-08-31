@@ -12,7 +12,6 @@ public:
 
 public:
   Q_INVOKABLE virtual void write() override;
-  Q_INVOKABLE virtual void read() override;
   Q_INVOKABLE virtual void save() override;
   Q_INVOKABLE virtual void saveAs() override;
   Q_INVOKABLE virtual void open() override;
