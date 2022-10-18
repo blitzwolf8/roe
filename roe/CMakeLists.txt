@@ -1,33 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(roe VERSION ${ROE_VERSION} LANGUAGES CXX)
-
-set(RESOURCE_DIR "${roe_SOURCE_DIR}/res")
-set(INCLUDE_DIR "${roe_SOURCE_DIR}/include")
-set(SOURCE_DIR "${roe_SOURCE_DIR}/src")
-
-include_directories(
-  ${RESOURCE_DIR}
-  ${INCLUDE_DIR}
-  ${SOURCE_DIR}
-)
-
-file(GLOB_RECURSE SOURCES
-    "${RESOURCE_DIR}/*.qrc"
-    "${INCLUDE_DIR}/*.h"
-    "${SOURCE_DIR}/*.cc"
-)
-
-set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_AUTOUIC_SEARCH_PATHS} ${RESOURCE_DIR})
-
-qt_add_executable(roe
-    MANUAL_FINALIZATION
-    ${SOURCES}
-)
-
-target_include_directories(roe PUBLIC ${PI_INCLUDE_DIRS})
-target_link_directories(roe PUBLIC ${PI_INCLUDE_DIRS})
-
 target_compile_definitions(roe
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 
@@ -48,7 +20,6 @@ if(CMAKE_BUILD_TYPE STREQUAL "Tsan")
 endif(CMAKE_BUILD_TYPE STREQUAL "Tsan")
 
 target_link_libraries(roe
-  PRIVATE Qt6::Core Qt6::Widgets )
 
 set_target_properties(roe PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER roe.xio.org

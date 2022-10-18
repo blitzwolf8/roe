@@ -52,8 +52,3 @@ compile_commands.json
 *creator.user*
 
 *_qmlcache.qrc
-
-# VsCode cmake generated files
-build
-.vscode
-temp
