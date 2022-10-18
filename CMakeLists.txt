@@ -12,14 +12,3 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_PREFIX_PATH $ENV{QTDIR})
 
-find_package(Qt6 6.2 COMPONENTS Core Quick Gui Widgets REQUIRED)
-add_subdirectory(roe)
-
-option(ROE_BUILD_TESTS "Build all roe's tests" OFF)
-mark_as_advanced(ROE_BUILD_TESTS)
-
-if(ROE_BUILD_TESTS)
-  enable_testing()
-  find_package(GTest REQUIRED)
-  add_subdirectory(tests)
-endif()

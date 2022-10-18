@@ -1,16 +1,49 @@
 #include "document.h"
-#include <QFont>
 
-Document::Document(QObject *parent)
-    : QObject(parent) {
+#include <QIODevice>
+#include <QTextStream>
+#include <QFile>
 
-    _document = new QTextDocument();
-    auto layout = QPlainTextDocumentLayout(this->_document);
-    _document->setDocumentLayout(&layout);
-    _document->setDefaultFont(QFont("Times New Roman"));
-    _document->setTextWidth(24);
+PlainTextDocument::PlainTextDocument(Document *parent) : Document(parent) {
+  ptextEdit = new QPlainTextEdit();
 }
 
-QTextDocument * Document::document() const {
-    return _document;
+PlainTextDocument::~PlainTextDocument() {}
+
+void PlainTextDocument::write() {}
+
+void PlainTextDocument::open(const QString &file) {
+  if (status == StatusFlags::Modified) {
+    close();
+    open(file);
+  }
+  else {
+    _filename = file;
+    emit statusChanged(StatusFlags::Opened);
+    emit nameChanged(_filename);
+    QFile file(_filename);
+    if(file.open(QFile::ReadWrite)){
+      QTextStream strm(&file);
+      QString data = strm.readAll();
+      ptextEdit->setPlainText(data);
+    }
+  }
 }
+
+void PlainTextDocument::save() {}
+
+void PlainTextDocument::saveAs() {}
+
+void PlainTextDocument::close() {}
+
+QString PlainTextDocument::fileName() const { return _filename; }
+
+bool PlainTextDocument::isOpened() const {
+  return status == StatusFlags::Opened;
+}
+
+bool PlainTextDocument::isModified() const {
+  return status == StatusFlags::Modified;
+}
+
+QPlainTextEdit *PlainTextDocument::textEdit() const { return ptextEdit; }
